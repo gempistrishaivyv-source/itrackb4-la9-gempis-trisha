@@ -1,25 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Featured Shoe</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>⭐ Featured Shoe</h1>
+@section('title', 'Featured Shoe')
 
-    <h2>{{ $item['name'] }}</h2>
+@section('content')
 
-    <p><strong>ID:</strong> {{ $item['id'] }}</p>
-    <p><strong>Shoe:</strong> {{ $item['name'] }}</p>
-    <p><strong>Brand:</strong> {{ $item['brand'] }}</p>
-    <p><strong>Category:</strong> {{ $item['category'] }}</p>
-    <p><strong>Price:</strong> ₱{{ $item['price'] }}</p>
+    <h2>⭐ Featured Shoe</h2>
 
-    <p>Created by: Trisha Ivy Gempis</p>
+    <div class="card">
+        <div class="card-body">
 
-    <a href="{{ route('shoes.index') }}">
-        Back to Shoe List
-    </a>
+            <h3>{{ $item['name'] }}</h3>
 
-</body>
-</html>
+            <p>
+                <strong>ID:</strong>
+                {{ $item['id'] }}
+            </p>
+
+            <p>
+                <strong>Shoe:</strong>
+                {{ $item['name'] }}
+            </p>
+
+            <p>
+                <strong>Brand:</strong>
+                {{ $item['brand'] }}
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                {{ $item['category'] }}
+            </p>
+
+            <p>
+                <strong>Price:</strong>
+                ₱{{ $item['price'] }}
+            </p>
+
+            <a
+                class="btn btn-primary"
+                href="{{ route('shoes.index') }}"
+            >
+                Back to Shoe List
+            </a>
+
+        </div>
+    </div>
+
+@endsection

@@ -1,52 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Shoe Collection</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>My Shoe Collection</h1>
+@section('title', 'Shoe Collection')
 
-    <p>Created by: Trisha Ivy Gempis</p>
+@section('content')
 
-    <p>
-        <a href="{{ route('shoes.featured') }}">
-            ⭐ View Featured Shoe
-        </a>
-    </p>
+    <h2>Shoe List</h2>
 
-    <p>
-        <a href="{{ route('shoes.filter') }}">
-            View All Shoes
-        </a>
-    </p>
-
-    <table border="1" cellpadding="10">
-        <tr>
-            <th>ID</th>
-            <th>Shoe</th>
-            <th>Brand</th>
-            <th>Category</th>
-            <th>Price</th>
-        </tr>
-
-        @foreach ($shoes as $item)
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
-                <td>{{ $item['id'] }}</td>
-
-                <td>
-                    <a href="{{ route('shoes.show', $item['id']) }}">
-                        {{ $item['name'] }}
-                    </a>
-                </td>
-
-                <td>{{ $item['brand'] }}</td>
-                <td>{{ $item['category'] }}</td>
-                <td>₱{{ $item['price'] }}</td>
+                <th>No.</th>
+                <th>ID</th>
+                <th>Shoe</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Price</th>
             </tr>
-        @endforeach
+        </thead>
 
+        <tbody>
+            @forelse ($shoes as $item)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+
+                    <td>{{ $item['id'] }}</td>
+
+                    <td>
+                        <a href="{{ route('shoes.show', $item['id']) }}">
+                            {{ $item['name'] }}
+                        </a>
+                    </td>
+
+                    <td>{{ $item['brand'] }}</td>
+
+                    <td>{{ $item['category'] }}</td>
+
+                    <td>
+                        ₱{{ $item['price'] }}
+
+                        @if ($item['price'] >= 8000)
+                            <span class="badge bg-primary">Premium</span>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6">
+                        No shoes are available in the collection.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
     </table>
 
-</body>
-</html>
+@endsection

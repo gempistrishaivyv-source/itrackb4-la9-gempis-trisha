@@ -1,27 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Shoe Filter</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Shoe Collection</h1>
+@section('title', 'Shoe Filter')
 
-    <h2>Active Filter: {{ $activeFilter }}</h2>
+@section('content')
 
-    @if (count($shoes) > 0)
+    <h2>Shoe Collection</h2>
 
-        <table border="1" cellpadding="10">
+    <h3>Active Filter: {{ $activeFilter }}</h3>
+
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
+                <th>No.</th>
                 <th>ID</th>
                 <th>Shoe</th>
                 <th>Brand</th>
                 <th>Category</th>
                 <th>Price</th>
             </tr>
+        </thead>
 
-            @foreach ($shoes as $item)
+        <tbody>
+            @forelse ($shoes as $item)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
+
                     <td>{{ $item['id'] }}</td>
 
                     <td>
@@ -31,24 +34,28 @@
                     </td>
 
                     <td>{{ $item['brand'] }}</td>
+
                     <td>{{ $item['category'] }}</td>
-                    <td>₱{{ $item['price'] }}</td>
+
+                    <td>
+                        ₱{{ $item['price'] }}
+                    </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">
+                        No shoes found for this filter.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-        </table>
-
-    @else
-
-        <p>No shoes found for this filter.</p>
-
-    @endif
-
-    <br>
-
-    <a href="{{ route('shoes.index') }}">
+    <a
+        class="btn btn-primary"
+        href="{{ route('shoes.index') }}"
+    >
         Back to Shoe List
     </a>
 
-</body>
-</html>
+@endsection
