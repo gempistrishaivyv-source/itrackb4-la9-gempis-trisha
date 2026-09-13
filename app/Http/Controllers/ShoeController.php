@@ -2,68 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class ShoeController extends Controller
 {
-    public function index()
-    {
-        $shoes = $this->shoes();
-
-        return view('shoes.index', [
-            'shoes' => $shoes
-        ]);
-    }
-
-    public function show($id)
-    {
-        $shoes = $this->shoes();
-
-        if (!isset($shoes[$id])) {
-            abort(404);
-        }
-
-        $item = $shoes[$id];
-
-        return view('shoes.show', [
-            'item' => $item
-        ]);
-    }
-
-    public function featured()
-    {
-        $shoes = $this->shoes();
-
-        $item = $shoes[3];
-
-        return view('shoes.featured', [
-            'item' => $item
-        ]);
-    }
-
-    public function filter($value = null)
-    {
-        $shoes = $this->shoes();
-
-        if ($value === null) {
-            return view('shoes.filter', [
-                'shoes' => $shoes,
-                'activeFilter' => 'All'
-            ]);
-        }
-
-        $filtered = [];
-
-        foreach ($shoes as $item) {
-            if ($item['category'] === $value) {
-                $filtered[] = $item;
-            }
-        }
-
-        return view('shoes.filter', [
-            'shoes' => $filtered,
-            'activeFilter' => $value
-        ]);
-    }
-
     private function shoes()
     {
         return [
@@ -115,5 +57,72 @@ class ShoeController extends Controller
                 'price' => 5995,
             ],
         ];
+    }
+
+    public function index()
+    {
+         $shoes = $this->shoes();
+
+        return view('shoes.index' , [
+            'shoes' => $shoes
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+             $shoes = $this->shoes();
+
+        if (!isset($shoes[$id])) {
+            abort(404);
+        }
+
+        $item = $shoes[$id];
+
+        return view('shoes.show', [
+            'item' => $item
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
