@@ -7,11 +7,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/shoes/featured', [ ShoeController::class, 'featured'])
+Route::get('/shoes/featured', [ShoeController::class, 'featured'])
     ->name('shoes.featured');
 
-Route::get('/shoes/filter/{value?}', [ShoeController::class, 'filter'])
-    ->name('shoes.filter');
+Route::get('/shoes/filter/{value?}', function ($value = null) {
+    if ($value) {
+        return redirect()->route('shoes.index', [
+            'category' => $value
+        ]);
+    }
+
+    return redirect()->route('shoes.index');
+})->name('shoes.filter');
 
 Route::resource('shoes', ShoeController::class)
     ->only(['index', 'show']);

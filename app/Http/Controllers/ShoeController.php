@@ -6,6 +6,31 @@ use Illuminate\Http\Request;
 
 class ShoeController extends Controller
 {
+    public function index(Request $request)
+    {
+        $shoes = $this->shoes();
+
+        $category = $request->query('category', 'all');
+        $brand = $request->query('brand', 'all');
+
+        $filtered = [];
+
+        foreach ($shoes as $item) {
+            $categoryMatch = $category === 'all' || $item['category'] === $category;
+            $brandMatch = $brand === 'all' || $item['brand'] === $brand;
+
+            if ($categoryMatch && $brandMatch) {
+                $filtered[] = $item;
+            }
+        }
+
+        return view('shoes.index', [
+            'shoes' => $filtered,
+            'category' => $category,
+            'brand' => $brand
+        ]);
+    }
+
     private function shoes()
     {
         return [
@@ -16,7 +41,6 @@ class ShoeController extends Controller
                 'category' => 'Sneakers',
                 'price' => 5495,
             ],
-
             2 => [
                 'id' => 2,
                 'name' => 'Chuck Taylor All Star',
@@ -24,7 +48,6 @@ class ShoeController extends Controller
                 'category' => 'Casual',
                 'price' => 3990,
             ],
-
             3 => [
                 'id' => 3,
                 'name' => 'Suede Classic',
@@ -32,7 +55,6 @@ class ShoeController extends Controller
                 'category' => 'Sneakers',
                 'price' => 4200,
             ],
-
             4 => [
                 'id' => 4,
                 'name' => 'Old Skool',
@@ -40,7 +62,6 @@ class ShoeController extends Controller
                 'category' => 'Casual',
                 'price' => 3995,
             ],
-
             5 => [
                 'id' => 5,
                 'name' => 'Gel-Kayano 30',
@@ -48,7 +69,6 @@ class ShoeController extends Controller
                 'category' => 'Running',
                 'price' => 8990,
             ],
-
             6 => [
                 'id' => 6,
                 'name' => '574 Core',
@@ -59,37 +79,19 @@ class ShoeController extends Controller
         ];
     }
 
-    public function index()
-    {
-         $shoes = $this->shoes();
-
-        return view('shoes.index' , [
-            'shoes' => $shoes
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-             $shoes = $this->shoes();
+        $shoes = $this->shoes();
 
         if (!isset($shoes[$id])) {
             abort(404);
@@ -102,27 +104,29 @@ class ShoeController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
+    }
+
+    public function featured()
+    {
+        $shoes = $this->shoes();
+
+        $item = $shoes[3];
+
+        return view('shoes.featured', [
+            'item' => $item
+        ]);
     }
 }
