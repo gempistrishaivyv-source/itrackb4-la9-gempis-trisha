@@ -5,6 +5,12 @@
 @section('content')
 <h2>Shoe List</h2>
 
+<p>
+    <a href="{{ route('shoes.create') }}" class="btn btn-primary">
+        Add Shoe
+    </a>
+</p>
+
 <p>Category: {{ $category }} | Brand: {{ $brand }}</p>
 
 <h5>Filter by Category</h5>

@@ -1,17 +1,17 @@
-# ITRACKB4 LA6 - Shoe Filters
+# ITRACKB4 LA7 - Shoe Collection
 
-## Q1. Why is it better to use one `/shoes` route with query strings instead of creating a new route for every filter?
+## Q1. What is the difference between POST and GET, and what happens when you refresh after a POST?
 
-Using one `/shoes` route makes the filtering easier because the same page can handle different filter values. We can change the results by adding query strings to the URL. This also makes it possible to use the category and brand filters together.
+GET is used when we want to request or view a page, while POST is used when we send data from a form. In this activity, the shoe form uses POST because it sends a new shoe to the controller. After the shoe is saved, the controller redirects to the shoe list. This prevents the browser from submitting the same POST again when the page is refreshed.
 
-## Q2. If you used a route parameter for the category filter instead, what would the URL look like?
+## Q2. What happens when validation fails, and why does the save code not run?
 
-The URL could be `/shoes/Sneakers` if the category was placed in a route parameter. The value would be part of the URL path instead of being added after a question mark. In this case, Sneakers would be treated as a route value.
+When validation fails, Laravel returns the user to the form and shows the errors. The values entered in the form can still be shown using old(). The save part of the store method does not continue because the validation did not pass. This prevents an invalid shoe record from being saved to the JSON file.
 
-## Q3. Which navigation case needed a pattern change, and why did the other case not need one?
+## Q3. Why does the success message appear once even though the layout is shown on every page?
 
-The Shoe List link needs a pattern because it should stay active when I open a shoe detail page. The Featured Shoe link is for one specific page, so it can use its exact path. The `request()->is()` method checks the current path of the page.
+The success message is stored as a session flash message after a shoe is saved. The layout checks the session and displays the message when it is available. After the message is shown, the flash message is removed from the session. This is why the message can appear once even though the layout is used on every page.
 
-## Q4. Why did you delete the old filter method and Blade view but keep the empty `store()` and `update()` methods?
+## Author
 
-The old filter was removed because the new filtering is now done on the main shoe list using query strings. The old filter URL was kept so it can redirect to the new filter URL. I kept the empty `store()` and `update()` methods because they are still part of the controller and may be used later.
+Trisha Ivy Gempis

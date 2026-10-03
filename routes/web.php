@@ -21,4 +21,4 @@ Route::get('/shoes/filter/{value?}', function ($value = null) {
 })->name('shoes.filter');
 
 Route::resource('shoes', ShoeController::class)
-    ->only(['index', 'show']);
+    ->only(['index', 'create', 'store', 'show']);

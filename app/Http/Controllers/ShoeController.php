@@ -6,6 +6,21 @@ use Illuminate\Http\Request;
 
 class ShoeController extends Controller
 {
+    private function shoes()
+    {
+        $path = storage_path('app/shoes.json');
+
+        return json_decode(file_get_contents($path), true);
+    }
+
+    private function saveShoes(array $shoes)
+    {
+        file_put_contents(
+            storage_path('app/shoes.json'),
+            json_encode($shoes, JSON_PRETTY_PRINT)
+        );
+    }
+
     public function index(Request $request)
     {
         $shoes = $this->shoes();
@@ -31,62 +46,38 @@ class ShoeController extends Controller
         ]);
     }
 
-    private function shoes()
-    {
-        return [
-            1 => [
-                'id' => 1,
-                'name' => 'Air Force 1',
-                'brand' => 'Nike',
-                'category' => 'Sneakers',
-                'price' => 5495,
-            ],
-            2 => [
-                'id' => 2,
-                'name' => 'Chuck Taylor All Star',
-                'brand' => 'Converse',
-                'category' => 'Casual',
-                'price' => 3990,
-            ],
-            3 => [
-                'id' => 3,
-                'name' => 'Suede Classic',
-                'brand' => 'Puma',
-                'category' => 'Sneakers',
-                'price' => 4200,
-            ],
-            4 => [
-                'id' => 4,
-                'name' => 'Old Skool',
-                'brand' => 'Vans',
-                'category' => 'Casual',
-                'price' => 3995,
-            ],
-            5 => [
-                'id' => 5,
-                'name' => 'Gel-Kayano 30',
-                'brand' => 'ASICS',
-                'category' => 'Running',
-                'price' => 8990,
-            ],
-            6 => [
-                'id' => 6,
-                'name' => '574 Core',
-                'brand' => 'New Balance',
-                'category' => 'Running',
-                'price' => 5995,
-            ],
-        ];
-    }
-
     public function create()
     {
-        //
+        return view('shoes.create');
     }
 
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|max:255',
+            'brand' => 'required|in:Nike,Converse,Puma,Vans,ASICS,New Balance',
+            'category' => 'required|in:Sneakers,Casual,Running',
+            'price' => 'required|numeric|min:1'
+        ]);
+
+        $shoes = $this->shoes();
+
+        $id = 1;
+
+        foreach ($shoes as $item) {
+            if ($item['id'] >= $id) {
+                $id = $item['id'] + 1;
+            }
+        }
+
+        $data['id'] = $id;
+
+        $shoes[$id] = $data;
+
+        $this->saveShoes($shoes);
+
+        return redirect()->route('shoes.index')
+            ->with('success', 'Shoe added successfully.');
     }
 
     public function show(string $id)
